@@ -19,7 +19,8 @@ function placeOrder(pizzaName) {
         const newOrder = { pizza: selectedPizza, status: "ordered" }
         orderQueue.push(newOrder)
         return newOrder
-    } else {
+    }
+    else {
         console.log(`Sorry, we don't have ${pizzaName} on the menu.`)
     }
 }
