@@ -1,24 +1,41 @@
-const menu = [
-    { name: "Margherita", price: 8 },
-    { name: "Pepperoni", price: 10 },
-    { name: "Hawaiian", price: 10 },
-    { name: "Veggie", price: 9 },
+type Pizza = {
+    id: number,
+    name: string,
+    price: number
+}
+
+type Order = {
+    id: number,
+    pizza: Pizza,
+    status: "ordered" | "completed"
+}
+
+let nextOrderId:number= 1
+let nextPizzaId:number = 1
+
+const menu: Pizza[] = [
+    { id: nextPizzaId++, name: "Margherita", price: 8 },
+    { id: nextPizzaId++, name: "Pepperoni", price: 10 },
+    { id: nextPizzaId++, name: "Hawaiian", price: 10 },
+    { id: nextPizzaId++, name: "Veggie", price: 9 },
 ]
 
 let cashInRegister:number= 100
-let nextOrderId:number= 1
-let orderQueue:any = []
+const orderHistory:Order[] = []
 
-function addNewPizza(pizzaObj: any) {
-    menu.push(pizzaObj)
+function addNewPizza(pizzaObj: Omit<Pizza, "id">): Pizza {
+    const newPizza: Pizza = { id: nextPizzaId++, ...pizzaObj }
+    menu.push(newPizza)
+    console.log(`New pizza added: ${newPizza.name} with id ${newPizza.id}`)
+    return newPizza
 }
 
-function placeOrder(pizzaName: any) {
+function placeOrder(pizzaName: string): Order | void {
     const selectedPizza = menu.find(p => p.name === pizzaName)
     if (selectedPizza) {
         cashInRegister += selectedPizza.price
-        let newOrder = { pizza: selectedPizza, status: "ordered", id: nextOrderId++}
-        orderQueue.push(newOrder)
+        let newOrder:Order = { pizza: selectedPizza, status: "ordered", id: nextOrderId++}
+        orderHistory.push(newOrder)
         return newOrder
     }
     else {
@@ -28,8 +45,8 @@ function placeOrder(pizzaName: any) {
 }
 
 
-function completeOrder(orderId: number) {
-    let orderObj = orderQueue.find(orderObj => orderObj.id === orderId)
+function completeOrder(orderId: number): Order | void {
+    let orderObj = orderHistory.find(orderObj => orderObj.id === orderId)
     if (orderObj) {
         orderObj.status = "completed"
         return orderObj
@@ -39,27 +56,49 @@ function completeOrder(orderId: number) {
     }
 }
 
-addNewPizza({ name: "Chicken Bacon Ranch", price: 12 })
-addNewPizza({ name: "BBQ Chicken", price: 12 })
-addNewPizza({ name: "Spicy Sausage", price: 11 })
+export function getPizzaDetail(identifier: string | number): Pizza | undefined {
+    if (typeof identifier === "number") {
+        return menu.find(pizza => pizza.id === identifier)
+    }
+    else if (typeof identifier === "string") {
+        return menu.find(pizza => pizza.name.toLowerCase() === identifier.toLowerCase())
+    }
+    else {
+        throw new TypeError("Parameter `identifier` must be either a string or a number")
+    }
+}
+
+addNewPizza({name: "Chicken Bacon Ranch", price: 12 })
+addNewPizza({name: "BBQ Chicken", price: 12 })
+addNewPizza({name: "Spicy Sausage", price: 11 })
 placeOrder("Chicken Bacon Ranch")
 completeOrder(1)
 console.log("Menu:", menu)
 console.log("Cash in register:", cashInRegister)
-console.log("Order queue:", orderQueue)
+console.log("Order queue:", orderHistory)
 
 
+type Address = {
+    street: string
+    city: string
+    country: string
+}
 
 type Person = {
     name: string,
     age: number,
-    isStudent: boolean    
+    isStudent: boolean,
+    address?: Address
 }
+
+let address1: Address = { street: "Ellinos Stratiotou 93B", city: "Patras", country: "Greece" }
+let address2: Address = { street: "asdasda", city: "asdasdasda", country: "asdasd" }
 
 let person1: Person= {
     name: "Joe",
     age: 42,
-    isStudent: true
+    isStudent: true,
+    address: address1
 }
 
 let person2 : Person= {
@@ -67,3 +106,56 @@ let person2 : Person= {
     age: 66,
     isStudent: false
 }
+
+let ages: number[] = [100, 101]
+let people: Person[] = [person1, person2]
+let people2: Array<Person> = [person1, person2]
+
+
+let myName = "Simos"
+type User = {
+    id: number
+    username: string
+    role: "member" | "contributor" | "admin"
+}
+
+let nextUserId = 1
+
+const users: User[] = [
+    { id: nextUserId++, username: "john_doe", role: "member" },
+    { id: nextUserId++, username: "jane_smith", role: "contributor" }
+];
+
+function fetchUserDetails(username: string): User {
+    const user = users.find(user => user.username === username)
+    if (!user) {
+        throw new Error(`User with username ${username} not found`)
+    }
+    return user
+}
+
+type UpdatedUser = Partial<User>
+
+function updateUser(id: number, updates:UpdatedUser) {
+    const foundUser= users.find(user => user.id === id);
+    if (!foundUser) {
+        console.error(`User with id ${id} not found`);
+        return;
+    }
+    Object.assign(foundUser, updates);
+    console.log(`User with id ${id} updated successfully:`, foundUser);
+}
+
+// Example updates:
+updateUser(1, { username: "new_john_doe" });
+updateUser(4, { role: "contributor" });
+
+function addNewUser(newUser: Omit<User, "id">): User {
+    const user: User = { id: nextUserId++, ...newUser };
+    users.push(user);
+    console.log(`User added successfully:`, user);
+    return user;
+}
+
+// example usage:
+addNewUser({ username: "joe_schmoe", role: "member" })
