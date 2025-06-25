@@ -30,7 +30,7 @@ function addNewPizza(pizzaObj: Omit<Pizza, "id">): Pizza {
     return newPizza
 }
 
-function placeOrder(pizzaName: string): Order | void {
+function placeOrder(pizzaName: string): Order | undefined {
     const selectedPizza = menu.find(p => p.name === pizzaName)
     if (selectedPizza) {
         cashInRegister += selectedPizza.price
@@ -45,7 +45,7 @@ function placeOrder(pizzaName: string): Order | void {
 }
 
 
-function completeOrder(orderId: number): Order | void {
+function completeOrder(orderId: number): Order | undefined {
     let orderObj = orderHistory.find(orderObj => orderObj.id === orderId)
     if (orderObj) {
         orderObj.status = "completed"
@@ -159,3 +159,24 @@ function addNewUser(newUser: Omit<User, "id">): User {
 
 // example usage:
 addNewUser({ username: "joe_schmoe", role: "member" })
+
+const gameScores = [14, 21, 33, 42, 59]
+const favoriteThings = ["raindrops on roses", "whiskers on kittens", "bright copper kettles", "warm woolen mittens"];
+const voters = [{ name: "Alice", age: 42 }, { name: "Bob", age: 77 }]
+
+function getLastItem<PlaceholderType>(array: PlaceholderType[]): PlaceholderType | undefined {
+    return array[array.length - 1]
+}
+
+console.log(getLastItem(gameScores));
+console.log(getLastItem(favoriteThings));
+console.log(getLastItem(voters));
+
+function addToArray<Type>(array: Type[], item:Type) {
+    array.push(item)
+    return array
+}
+
+// example usage:
+addToArray(menu, {id: nextPizzaId++, name: "Chicken Bacon Ranch", price: 12 })
+addToArray<Order>(orderHistory, { id: nextOrderId++, pizza: menu[2], status: "completed" })
