@@ -34,7 +34,7 @@ function placeOrder(pizzaName: string): Order | undefined {
     const selectedPizza = menu.find(p => p.name === pizzaName)
     if (selectedPizza) {
         cashInRegister += selectedPizza.price
-        let newOrder:Order = { pizza: selectedPizza, status: "ordered", id: nextOrderId++}
+        const newOrder:Order = { pizza: selectedPizza, status: "ordered", id: nextOrderId++}
         orderHistory.push(newOrder)
         return newOrder
     }
@@ -46,7 +46,7 @@ function placeOrder(pizzaName: string): Order | undefined {
 
 
 function completeOrder(orderId: number): Order | undefined {
-    let orderObj = orderHistory.find(orderObj => orderObj.id === orderId)
+    const orderObj = orderHistory.find(orderObj => orderObj.id === orderId)
     if (orderObj) {
         orderObj.status = "completed"
         return orderObj
@@ -78,41 +78,41 @@ console.log("Cash in register:", cashInRegister)
 console.log("Order queue:", orderHistory)
 
 
-type Address = {
-    street: string
-    city: string
-    country: string
-}
+// type Address = {
+//     street: string
+//     city: string
+//     country: string
+// }
 
-type Person = {
-    name: string,
-    age: number,
-    isStudent: boolean,
-    address?: Address
-}
+// type Person = {
+//     name: string,
+//     age: number,
+//     isStudent: boolean,
+//     address?: Address
+// }
 
-let address1: Address = { street: "Ellinos Stratiotou 93B", city: "Patras", country: "Greece" }
-let address2: Address = { street: "asdasda", city: "asdasdasda", country: "asdasd" }
+// const address1: Address = { street: "Ellinos Stratiotou 93B", city: "Patras", country: "Greece" }
+// const address2: Address = { street: "asdasda", city: "asdasdasda", country: "asdasd" }
 
-let person1: Person= {
-    name: "Joe",
-    age: 42,
-    isStudent: true,
-    address: address1
-}
+// const person1: Person= {
+//     name: "Joe",
+//     age: 42,
+//     isStudent: true,
+//     address: address1
+// }
 
-let person2 : Person= {
-    name: "Jill",
-    age: 66,
-    isStudent: false
-}
+// const person2 : Person= {
+//     name: "Jill",
+//     age: 66,
+//     isStudent: false
+// }
 
-let ages: number[] = [100, 101]
-let people: Person[] = [person1, person2]
-let people2: Array<Person> = [person1, person2]
+// const ages: number[] = [100, 101]
+// const people: Person[] = [person1, person2]
+// const people2: Array<Person> = [person1, person2]
 
 
-let myName = "Simos"
+// const myName = "Simos"
 type User = {
     id: number
     username: string
@@ -126,13 +126,13 @@ const users: User[] = [
     { id: nextUserId++, username: "jane_smith", role: "contributor" }
 ];
 
-function fetchUserDetails(username: string): User {
-    const user = users.find(user => user.username === username)
-    if (!user) {
-        throw new Error(`User with username ${username} not found`)
-    }
-    return user
-}
+// function fetchUserDetails(username: string): User {
+//     const user = users.find(user => user.username === username)
+//     if (!user) {
+//         throw new Error(`User with username ${username} not found`)
+//     }
+//     return user
+// }
 
 type UpdatedUser = Partial<User>
 
